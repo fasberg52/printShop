@@ -1,10 +1,11 @@
 // ===== MODULE DEFINITION =====
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { resolve } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { SwaggerAuthMiddleware } from './common/middlewares/swagger.middleware';
 import { EnvironmentVariablesValidator } from './config/app.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { OrdersModule } from './modules/orders/orders.module';
@@ -26,8 +27,6 @@ import { validationEnv } from './utils/env.validation';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
       }),
       inject: [ConfigService],
     }),
@@ -41,4 +40,9 @@ import { validationEnv } from './utils/env.validation';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(SwaggerAuthMiddleware).forRoutes({ path: 'api-docs', method: RequestMethod.ALL });
+
+  }
+}

@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { plainToInstance } from 'class-transformer';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserResponseDto } from './dto/user-response.dto';
 import { User, UserDocument } from './schema/user.schema';
 
 @Injectable()
@@ -21,12 +23,12 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
-  async getProfile(userId: string) {
+  async getProfile(userId: string): Promise<UserResponseDto> {
     const user = await this.findById(userId);
     if (!user) {
       throw new NotFoundException('کاربر یافت نشد!');
     }
     const { passwordHash, ...result } = user.toObject();
-    return result;
+    return plainToInstance(UserResponseDto, result, { excludeExtraneousValues: true });
   }
 }

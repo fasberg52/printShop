@@ -1,29 +1,27 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-/**
- * Sets up Swagger for the NestJS application.
- * @param app The NestJS application instance.
- */
 export function setupSwagger(app: INestApplication): void {
-  const options = new DocumentBuilder()
-    .setTitle('Print Shop API')
-    .setDescription('API documentation for the Print Shop application')
-    .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter JWT token',
-        in: 'header',
-      },
+  const swaggerPath = process.env.SWAGGER_PATH || 'api-docs';
+  const title = process.env.SWAGGER_TITLE || 'API Documentation';
+  const description = process.env.SWAGGER_DESCRIPTION || 'API description';
 
-      'JWT-auth', // A unique name for the security scheme
-    )
+  const config = new DocumentBuilder()
+    .setTitle(title)
+    .setDescription(description)
+    .setVersion('1.0.0')
+    .addBearerAuth() // For API endpoints that use Bearer token
     .build();
 
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('docs-login', app, document);
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup(swaggerPath, app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
+
+  console.log(`Swagger documentation is running on /${swaggerPath}`);
 }
