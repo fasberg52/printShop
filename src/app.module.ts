@@ -14,6 +14,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { TariffsModule } from './modules/tariffs/tariffs.module';
 import { UsersModule } from './modules/users/users.module';
 import { validationEnv } from './utils/env.validation';
+import { PriceCalculatorModule } from './price-calculator/price-calculation.module';
 
 @Module({
   imports: [
@@ -36,13 +37,15 @@ import { validationEnv } from './utils/env.validation';
     TariffsModule,
     OrdersModule,
     PaymentsModule,
+    PriceCalculatorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(SwaggerAuthMiddleware).forRoutes({ path: 'api-docs', method: RequestMethod.ALL });
-
+    consumer
+      .apply(SwaggerAuthMiddleware)
+      .forRoutes({ path: 'api-docs', method: RequestMethod.ALL });
   }
 }

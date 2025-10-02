@@ -4,4 +4,4 @@ export * from './modules/payments/schema/payment.schema';
 export * from './modules/products/schema/product.schema';
 export * from './modules/tariffs/schema/tariffs.schema';
 export * from './modules/users/schema/user.schema';
-export * from './services/price-calculation.service';
+export * from './price-calculator/price-calculation.service';
