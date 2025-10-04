@@ -8,13 +8,14 @@ import { AppService } from './app.service';
 import { SwaggerAuthMiddleware } from './common/middlewares/swagger.middleware';
 import { EnvironmentVariablesValidator } from './config/app.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { FilesModule } from './modules/files/files.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { ProductsModule } from './modules/products/products.module';
 import { TariffsModule } from './modules/tariffs/tariffs.module';
 import { UsersModule } from './modules/users/users.module';
-import { validationEnv } from './utils/env.validation';
 import { PriceCalculatorModule } from './price-calculator/price-calculation.module';
+import { validationEnv } from './utils/env.validation';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PriceCalculatorModule } from './price-calculator/price-calculation.modu
     OrdersModule,
     PaymentsModule,
     PriceCalculatorModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

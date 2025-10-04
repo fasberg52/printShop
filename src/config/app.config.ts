@@ -27,4 +27,19 @@ export class EnvironmentVariablesValidator {
   @IsString()
   @IsOptional()
   SWAGGER_PASSWORD: string;
+
+  @IsString()
+  S3_ENDPOINT: string;
+
+  @IsString()
+  S3_BUCKET_NAME: string;
+
+  @IsString()
+  S3_ACCESS_KEY_ID: string;
+
+  @IsString()
+  S3_SECRET_ACCESS_KEY: string;
+
+  @IsString()
+  S3_REGION: string;
 }

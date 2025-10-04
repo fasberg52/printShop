@@ -11,7 +11,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  getProfile(@GetUser('_id') userId: string): Promise<UserResponseDto> {
+  getProfile(@GetUser() userId: string): Promise<UserResponseDto> {
     return this.usersService.getProfile(userId);
   }
 }
